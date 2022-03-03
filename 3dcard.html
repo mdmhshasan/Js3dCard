@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>javascript slider</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            display: flex;
+            
+            height: 100vh;
+           perspective:500px;
+            overflow: hidden;
+        }
+        .box{
+            width: 300px;
+            height: 400px;
+            background: blue;
+            transform-style: preserve-3d;
+            transform: perspective(500px);
+            position: fixed;
+            transition: .5s;
+            background-image: url(img/danis.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 5px;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <script>
+    var box=document.querySelector(".box")
+ 
+        box.onmousemove=function(e){
+   var x=(window.innerWidth/2-e.pageX)/5;   
+    var y=(window.innerHeight/2-e.pageY)/5;
+        console.log(x,y)
+        box.style.transform=`rotateX(${x}deg) rotateY(${y}deg) `;
+        box.style.filter=`hue-rotate(${y*6}deg)`;
+        }
+       
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </script>
+    
+    
+</body>
+</html>
