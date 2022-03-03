@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+</head>
+<body style="background: #000;" style="overflow: hidden;">
+    <canvas width="300px" height="300px" style="border: 2px solid #000; overflow: hidden;" id="canvas"></canvas>
+    <script>
+    var canvas=document.querySelector("#canvas")
+    var ctx=canvas.getContext('2d');
+        canvas.width=window.innerWidth;
+        canvas.height=window.innerHeight;
+        var pariclesArray=[];
+        var hue=0;
+    window.addEventListener("resize",function(envent){
+        canvas.width=window.innerWidth;
+        canvas.height=window.innerHeight;
+         mous.x=envent.x;
+            mous.y=envent.y;   
+        for(var i=0;i<10;i++){
+            pariclesArray.push(new particle())
+        }
+    })
+        var mous={
+            x:undefined,
+            y:undefined,
+        }
+        canvas.addEventListener("mousemove",function(envent){
+            mous.x=envent.x;
+            mous.y=envent.y;      
+                    for(var i=0;i<10;i++){
+            pariclesArray.push(new particle())
+        }
+        })
+  
+        class particle{
+            constructor(){
+                
+                this.x=mous.x;
+                this.y=mous.y;
+//                this.x=Math.random()*canvas.width;                
+//                this.y=Math.random()*canvas.height;
+
+                this.size=Math.random()*6+2;
+                this.speedX=Math.random()*3 -1.5;               
+                this.speedY=Math.random()*3 -1.5;
+                this.color='hsl('+hue+',100%,50%)';
+            }
+            update(){
+                this.x+=this.speedX;
+                this.y+=this.speedY;
+           if(this.size>0.2)this.size-=0.1;
+            }
+            draw(){
+         ctx.beginPath()
+                ctx.fillStyle=this.color;
+     ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill()
+            }
+            
+        }
+        
+     
+        function handle(){
+             for(var i=0;i<pariclesArray.length;i++){
+               pariclesArray[i].update();       
+                pariclesArray[i].draw();
+                 for(let j=i;j<pariclesArray.length;j++){
+                     var dx=pariclesArray[i].x-pariclesArray[j].x;            
+                    var dy=pariclesArray[i].y-pariclesArray[j].y;
+                     var dis=Math.sqrt(dx*dx+dy*dy);
+                     if(dis<100){
+                         ctx.beginPath()
+                         ctx.strokeStyle=pariclesArray[i].color;
+                         ctx.lineWidth=pariclesArray[i].size/3;
+                         ctx.moveTo(pariclesArray[i].x,pariclesArray[i].y)
+                         ctx.lineTo(pariclesArray[j].x,pariclesArray[j].y)
+                         ctx.stroke();
+                     }
+
+                 }
+                   if(pariclesArray[i].size<=0.3){
+                pariclesArray.splice(i,1);
+                console.log(pariclesArray.length)
+                i--;
+                }
+            }
+        }
+    function animate(){
+    ctx.clearRect(0,0, canvas.width,canvas.height);
+        ctx.fillStyle='rgba(0,0,0,0.02)';
+        ctx.fillRect(0,0,canvas.width,canvas.height)
+         handle();
+        hue+=5;
+        requestAnimationFrame(animate);
+    }
+        animate()    
+    </script>
+</body>
+</html>
